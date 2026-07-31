@@ -40,7 +40,7 @@ fi
 
 # --- 2. Pick the issue ---
 if [[ -z "$ISSUE_NUMBER" ]]; then
-  ISSUE_JSON="$(gh issue list --repo neocastro/tlarc --label ready-for-agent --state open --limit 1 --order asc --sort created --json number,title,body --jq '.[0]')"
+  ISSUE_JSON="$(gh issue list --repo neocastro/tlarc --label ready-for-agent --state open --limit 100 --json number,title,body --jq 'sort_by(.number) | .[0]')"
 else
   ISSUE_JSON="$(gh issue view "$ISSUE_NUMBER" --repo neocastro/tlarc --json number,title,body --jq '.')"
 fi
