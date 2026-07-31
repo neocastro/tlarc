@@ -4,6 +4,8 @@
 //! the library exists so tests and the diff harness can call the checker
 //! without going through argv parsing.
 
+pub mod ast;
+
 /// The tlarc version, mirrored from Cargo.toml.
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 
