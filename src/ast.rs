@@ -62,10 +62,7 @@ pub enum Expr {
     String { value: String },
     /// `LET d1 == e1 ... dn == en IN body`
     #[serde(rename = "letin")]
-    LetIn {
-        defs: Vec<OpDef>,
-        body: Box<Expr>,
-    },
+    LetIn { defs: Vec<OpDef>, body: Box<Expr> },
     /// A construct the AST does not yet model; `type` names the SANY node
     /// class (or "oparg" for operator arguments).
     #[serde(rename = "unhandled")]
