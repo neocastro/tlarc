@@ -1,0 +1,17 @@
+# Rust build artifacts
+/target
+**/*.rs.bk
+
+# Devbox
+/.devbox
+
+# Downloaded toolchain jars (fetch via scripts/fetch-tla2tools.sh)
+/bridge/lib/*.jar
+
+# IDE
+/.idea
+/.vscode
+*.iml
+
+# OS
+.DS_Store

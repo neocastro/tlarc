@@ -1,0 +1,22 @@
+{
+  "packages": [
+    "rustup@1.29.0",
+    "temurin-bin"
+  ],
+  "shell": {
+    "init_hook": [
+      "rustup toolchain install 2>&1 | grep -v '^info:' || true"
+    ],
+    "scripts": {
+      "fetch-tla2tools": [
+        "./scripts/fetch-tla2tools.sh"
+      ],
+      "build": [
+        "cargo build"
+      ],
+      "test": [
+        "cargo test"
+      ]
+    }
+  }
+}
