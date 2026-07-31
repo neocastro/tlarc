@@ -11,6 +11,14 @@
 # Java bridge build output
 /bridge/target
 
+# Temporal-reasoning memory (machine-personal; see docs/agents/issue-tracker.md
+# and the temporal-reasoning skill). The graph + FTS index hold local session
+# memory; .mcp.json/.claude carry machine-specific paths and API keys.
+/memory.graph
+/memory.graph.fts.sqlite3
+/.mcp.json
+/.claude/
+
 # IDE
 /.idea
 /.vscode
