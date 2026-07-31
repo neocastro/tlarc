@@ -12,7 +12,7 @@
 #      task; the agent writes test-first code, commits to the branch, and
 #      opens a PR (gh pr create) when the harness is green.
 #
-# Usage: scripts/grind-next-issue.sh [--issue NUMBER] [--keep-branch]
+# Usage: scripts/grind-next-issue.sh [--issue NUMBER] [--keep-branch] [--solo]
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -20,10 +20,12 @@ cd "$REPO_ROOT"
 
 ISSUE_NUMBER=""
 KEEP_BRANCH=0
+SOLO=0
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --issue) ISSUE_NUMBER="$2"; shift 2 ;;
     --keep-branch) KEEP_BRANCH=1; shift ;;
+    --solo) SOLO=1; shift ;;
     *) echo "unknown arg: $1" >&2; exit 2 ;;
   esac
 done
@@ -89,6 +91,30 @@ Tools:
 - You have Bash, File, and Git tools. Use tool_search to discover any other tool you need.
 - Never guess a tool name — verify it in the catalog first.
 - Inspect the repo layout with the File tool before editing."
+fi
+
+# --- 4b. Solo mode: strong agent unavailable — step up ---
+# Used when API credits are out and the local model is the only agent.
+# The model takes on the strong-agent roles too: design, self-review, and
+# the HITL decisions the issue requires.
+if [[ "$SOLO" == "1" ]]; then
+  PROMPT+="
+
+SOLO OPERATION — you are the ONLY agent on this project right now:
+- The strong agent is unavailable (API credits exhausted). Do not wait for a
+  reviewer or a human gate. You decide and you proceed.
+- Before writing code: read the issue's acceptance criteria, inspect the repo
+  layout, and design the minimal change that satisfies them.
+- After implementing: review your own diff against the acceptance criteria
+  like a strict reviewer would. Fix anything that does not match before
+  committing.
+- Run the full check suite (cargo fmt/clippy/test or the harness gate) and
+  only open the PR when it is green.
+- If the issue leaves a genuine decision open that changes behavior, pick the
+  option that best matches the repo's working agreements and ADRs, and state
+  the decision in the PR body.
+- Never commit to main. The branch and PR flow is unchanged."
+  echo "==> solo mode: local model stepping up as sole agent"
 fi
 
 codewhale --provider ollama exec --auto "$PROMPT"
