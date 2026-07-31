@@ -12,6 +12,11 @@ configuration the skills need:
 - `docs/agents/issue-tracker.md` — issues live in GitHub Issues on this repo
 - `docs/agents/triage-labels.md` — the triage label vocabulary
 - `docs/agents/domain.md` — CONTEXT.md + docs/adr/ layout (single context)
+- `docs/agents/memory.md` — how to run/query the temporal-reasoning minigraf
+  memory (MCP launch needs `mcp<2` pin; direct fallback via the binding)
+- `docs/agents/local-agent.md` — the weak local model (Ollama
+  `deepseek-r1:14b` under `codewhale exec`) that grinds
+  `ready-for-agent` issues; run it via `scripts/grind-next-issue.sh`
 
 ## Working agreements
 

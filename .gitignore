@@ -18,6 +18,7 @@
 /memory.graph.fts.sqlite3
 /.mcp.json
 /.claude/
+/.codewhale/
 
 # IDE
 /.idea
