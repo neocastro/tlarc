@@ -8,6 +8,9 @@
 # Downloaded toolchain jars (fetch via scripts/fetch-tla2tools.sh)
 /bridge/lib/*.jar
 
+# Java bridge build output
+/bridge/target
+
 # IDE
 /.idea
 /.vscode

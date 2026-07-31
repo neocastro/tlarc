@@ -30,6 +30,6 @@ jobs:
           java-version: "21"
       # M0.2: the pinned jar must download and pass checksum verification.
       - run: ./scripts/fetch-tla2tools.sh
-      # Smoke: the jar must actually run on the CI JDK.
-      - run: java -cp bridge/lib/tla2tools.jar tlc2.TLC -help >/dev/null 2>&1 || true
-        # (M0.3 replaces the `|| true` with a real bridge invocation.)
+      # M0.3: the bridge must compile and emit a schema-valid document.
+      - run: javac -cp bridge/lib/tla2tools.jar -d bridge/target/classes bridge/src/SanyJson.java
+      - run: java -cp bridge/lib/tla2tools.jar:bridge/target/classes SanyJson corpus/trivial.tla | python3 -c "import json,sys; json.load(sys.stdin); print('bridge JSON valid')"
