@@ -25,6 +25,10 @@ jobs:
       - run: cargo fmt --check
       - run: cargo clippy --all-targets -- -D warnings
       - run: cargo test
+      # M0.6: the diff harness must run green over the whole corpus. The
+      # tlarc binary is discovered as the sibling of this harness's exe;
+      # java is on PATH via setup-java, the jar was fetched above.
+      - run: cargo run -q --bin tlarc-test-harness -- --corpus corpus
 
   toolchain:
     name: tla2tools.jar fetch + JVM smoke
