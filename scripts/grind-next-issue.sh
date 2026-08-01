@@ -95,9 +95,10 @@ Rules (always apply):
   are true, keep calling tools.
 
 Tools:
-- You have Bash, File, and Git tools. Use tool_search to discover any other tool you need.
+- You have a shell tool (its exact name may be exec_shell or Bash — do not assume), a File tool, and Git tools. Before your first call, use tool_search (query: shell, file, git) to list the exact tool names available to you.
 - Never guess a tool name — verify it in the catalog first.
-- Inspect the repo layout with the File tool before editing."
+- Inspect the repo layout with the File tool before editing.
+- If a tool you expected (Bash/File/Git) is not in your tool list, do NOT give up: run tool_search to find the closest equivalent (e.g. exec_shell) and use it."
 fi
 
 # --- 4b. Solo mode: strong agent unavailable — step up ---
