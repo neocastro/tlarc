@@ -8,6 +8,7 @@ pub mod ast;
 pub mod bridge;
 pub mod check;
 pub mod diff;
+pub mod value;
 
 /// The tlarc version, mirrored from Cargo.toml.
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
