@@ -27,3 +27,6 @@
 
 # OS
 .DS_Store
+
+# TLC state dir (only when run without -metadir)
+/states
