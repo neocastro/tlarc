@@ -5,6 +5,8 @@
 //! without going through argv parsing.
 
 pub mod ast;
+pub mod bridge;
+pub mod check;
 
 /// The tlarc version, mirrored from Cargo.toml.
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");

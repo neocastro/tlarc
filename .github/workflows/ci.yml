@@ -15,6 +15,13 @@ jobs:
         with:
           components: rustfmt, clippy
       - uses: Swatinem/rust-cache@v2
+      # Provision the bridge toolchain so the M0.5 e2e tests run for real.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - run: ./scripts/fetch-tla2tools.sh
+      - run: javac -cp bridge/lib/tla2tools.jar -d bridge/target/classes bridge/src/SanyJson.java
       - run: cargo fmt --check
       - run: cargo clippy --all-targets -- -D warnings
       - run: cargo test
