@@ -62,16 +62,17 @@ fn e2e_harness_green_on_corpus() {
     let report: serde_json::Value =
         serde_json::from_slice(&out.stdout).expect("harness stdout is the JSON report");
     assert_eq!(report["tool"], "tlarc-test-harness");
-    assert_eq!(report["passed"], 1);
+    // M0.7 corpus: functions, letin, sequence, sets, trivial, values.
+    assert_eq!(report["passed"], 6);
     assert_eq!(report["failed"], 0);
 
     let spec = &report["specs"][0];
-    assert_eq!(spec["spec"], "trivial");
+    assert_eq!(spec["spec"], "functions");
     assert_eq!(spec["ok"], true);
     assert_eq!(spec["tlc"]["ran"], true);
     assert_eq!(spec["tlc"]["verdict"], "no_error");
     assert_eq!(spec["tlc"]["exit_code"], 0);
-    assert_eq!(spec["tlc"]["distinct_states"], 2);
+    assert_eq!(spec["tlc"]["distinct_states"], 4);
     assert_eq!(spec["tlarc"]["ran"], true);
     assert_eq!(spec["tlarc"]["exit_code"], 0);
     assert_eq!(spec["tlarc"]["verdict"]["status"], "ok");
