@@ -86,6 +86,13 @@ Rules (always apply):
 - Run the project checks (cargo fmt/clippy/test or the harness gate the issue requires) before committing.
 - Commit with a clear message referencing the issue (e.g. \"fix #${NUMBER}: ...\").
 - When the work is green, open a PR with: gh pr create --title \"...\" --body \"Closes #${NUMBER}\"
+- A response that contains only a plan or a summary — with no code written, no
+  commit, and no PR — is a FAILURE. Do not write a final answer; your final
+  message must be a tool call that lands work.
+- You are done ONLY when all four hold: (1) the code exists on disk, (2) the
+  checks pass (cargo fmt/clippy/test or the harness gate), (3) a commit
+  referencing the issue is on this branch, (4) a PR is open. Until all four
+  are true, keep calling tools.
 
 Tools:
 - You have Bash, File, and Git tools. Use tool_search to discover any other tool you need.
@@ -119,4 +126,19 @@ fi
 
 codewhale --provider ollama exec --auto "$PROMPT"
 
-echo "==> done grinding issue #${NUMBER}; branch: ${BRANCH:-$(git branch --show-current)}"
+# --- 5. Verify the agent landed work, not just a response ---
+# A model that answers the issue in prose without committing is a failed
+# grind; the exec exit code alone cannot tell the difference.
+WORK_BRANCH="${BRANCH:-$(git branch --show-current)}"
+COMMIT_COUNT="$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)"
+if [[ "${COMMIT_COUNT}" -eq 0 ]]; then
+  echo "ERROR: no commits on ${WORK_BRANCH} — the model responded without doing the work" >&2
+  echo "  (a plan/summary-only response is a failed grind; see the exec session transcript)" >&2
+  exit 1
+fi
+if ! gh pr list --head "${WORK_BRANCH}" --state open --json number --jq 'length' 2>/dev/null | grep -qE '[1-9]'; then
+  echo "ERROR: commits landed on ${WORK_BRANCH} but no open PR — the model did not finish the flow" >&2
+  exit 1
+fi
+
+echo "==> done grinding issue #${NUMBER}; branch: ${WORK_BRANCH}"
